@@ -5,7 +5,7 @@ import cson
 def parse_file(filename, root_note_path):
     # Parse the .cson, returning a dictionary that can be accessed more easily.
     # root_note_path and filename must be joined into a single path to allow for files to be accessed even when main.py is not running from the same directory.
-    with open(os.path.join(root_note_path,filename), "r") as f:
+    with open(os.path.join(root_note_path,filename), "r", errors="ignore") as f:
         parsed_cson = cson.load(f)
 
     # The note title gets used as the filename, so sanitise it to remove any problem characters (e.g. \).
@@ -15,7 +15,13 @@ def parse_file(filename, root_note_path):
         return title
 
     title = sanitise_title(parsed_cson["title"])
-    content = parsed_cson["content"]
+
+    # Empty notes return a KeyError, since there is no content. Set content to empty string in this case, so they can still be exported correctly.
+    try:
+        content = parsed_cson["content"]
+    except KeyError:
+        content = ""
+
     createdAt = parsed_cson["createdAt"]
     modifiedAt = parsed_cson["updatedAt"]
     folder = parsed_cson["folder"]
