@@ -1,0 +1,34 @@
+createdAt: "2019-01-29T09:37:45.215Z"
+updatedAt: "2019-01-29T09:58:08.471Z"
+type: "MARKDOWN_NOTE"
+folder: "571be2e82be658d11079"
+title: "Lecture $\\Delta$"
+tags: []
+content: '''
+  29/1/19
+  
+  # Lecture $\\Delta$
+  
+  ## SPICE Simulation
+  - For modelling/representing circuits in a formal language.
+  
+  **Transient Analysis**
+  - Voltages/Currents against time.
+  
+  **AC Analysis**
+  - Voltages/Currents against frequency.
+  
+  ### CIR Files
+  - First line is *always* title.
+  - Last line is *always* `.END`
+  - V = Voltage source
+  - C = Capacitor
+  - R = Resistor
+  
+  #### `.AC`
+  - Fequency analysis
+  - 10Hz - 10MHz 
+'''
+linesHighlighted: []
+isStarred: false
+isTrashed: false
