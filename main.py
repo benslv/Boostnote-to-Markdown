@@ -41,7 +41,6 @@ def parse_file(filename, root_note_path):
 
 root_note_path = str(input("Enter the filepath to your Boostnote files:\n"))
 file_list = os.listdir(root_note_path)
-print(file_list)
 
 for filename in file_list:
     parse_file(filename, root_note_path)
