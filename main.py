@@ -27,7 +27,7 @@ def parse_file(filename, root_note_path):
     folder = parsed_cson["folder"]
 
     # Create the respective folder for the note to be placed in.
-    output_dir = os.path.join("Output",folder)
+    output_dir = os.path.join(root_note_path,"Output",folder)
     try:
         # os.makedirs will (try to) create the entire folder structure from left to right, not just the rightmost file.
         os.makedirs(output_dir)
