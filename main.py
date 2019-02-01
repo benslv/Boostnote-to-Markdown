@@ -1,6 +1,6 @@
 import os
-import time
 import cson
+import parsetime
 
 def parse_file(filename, root_note_path):
     # Parse the .cson, returning a dictionary that can be accessed more easily.
@@ -14,16 +14,17 @@ def parse_file(filename, root_note_path):
         title = "".join([x if x not in forbidden_chars else "_" for x in title])
         return title
 
-    title = sanitise_title(parsed_cson["title"])
+    def set_mtime(file_path, modifiedAt):
+        os.utime(file_path, (modifiedAt, modifiedAt))
 
+    # Set all the required 'attributes' about the file.
+    title = sanitise_title(parsed_cson["title"])
     # Empty notes return a KeyError, since there is no content. Set content to empty string in this case, so they can still be exported correctly.
     try:
         content = parsed_cson["content"]
     except KeyError:
         content = ""
-
-    createdAt = parsed_cson["createdAt"]
-    modifiedAt = parsed_cson["updatedAt"]
+    modifiedAt = parsetime.parse_time(parsed_cson["updatedAt"])
     folder = parsed_cson["folder"]
 
     # Create the respective folder for the note to be placed in.
@@ -35,9 +36,14 @@ def parse_file(filename, root_note_path):
         # Directory already made, so continue.
         pass
 
+    # file_path = output_dir+"\\"+title+".md"
+    file_path = os.path.join(output_dir,title+".md")
+
     # Open a new Markdown file in its respective folder, and write the contents of the .cson file to it.
-    with open(output_dir+"\\"+title+".md", "w") as output:
+    with open(file_path, "w") as output:
         output.write(content)
+    
+    set_mtime(file_path, modifiedAt)
 
 root_note_path = str(input("Enter the filepath to your Boostnote files:\n"))
 file_list = os.listdir(root_note_path)
