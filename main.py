@@ -1,6 +1,7 @@
 import os
 import cson
-import parsetime
+import parse_time
+import parse_folders
 
 def parse_file(filename, root_note_path):
     # Parse the .cson, returning a dictionary that can be accessed more easily.
@@ -24,11 +25,13 @@ def parse_file(filename, root_note_path):
         content = parsed_cson["content"]
     except KeyError:
         content = ""
-    modifiedAt = parsetime.parse_time(parsed_cson["updatedAt"])
-    folder = parsed_cson["folder"]
+
+    modifiedAt = parse_time.parse_time(parsed_cson["updatedAt"])
+    folder = f_dict[parsed_cson["folder"]]
 
     # Create the respective folder for the note to be placed in.
     output_dir = os.path.join(root_note_path,"Output",folder)
+
     try:
         # os.makedirs will (try to) create the entire folder structure from left to right, not just the rightmost file.
         os.makedirs(output_dir)
@@ -46,6 +49,10 @@ def parse_file(filename, root_note_path):
     set_mtime(file_path, modifiedAt)
 
 root_note_path = str(input("Enter the filepath to your Boostnote files:\n"))
+
+f_dict = parse_folders.parse_folders(root_note_path)
+print(f_dict)
+
 file_list = os.listdir(root_note_path)
 
 for filename in file_list:
